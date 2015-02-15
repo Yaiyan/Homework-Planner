@@ -1,0 +1,242 @@
+import databaseHandler
+import actor
+import csv
+import os
+
+def buildDB():
+    """Builds the database"""
+    databaseHandler.buildDB()
+
+def insertFakeUser():
+    """Inserts an admin user into the database. To change
+    default admin settings, change the values in this
+    function"""
+    a = actor.Actor()
+    
+    a.name = "Admin"
+    a.email = "admin@stanwell.org"
+    a.password = "Password"
+    a.rights = 3 #3 is admin rights
+    
+    a.generate()
+
+def insertUsersFromCSV(csv_content):
+    """Inserts users stored in a csv file into the database
+    Does not support backup csv's, and csv must be in form:
+    
+    Name, Email, Rights, [Year group if rights=1]
+    Actor id is automatically assigned"""
+    
+    #Initialise the csv reader and split on newline
+    reader = csv.reader(csv_content.split("\n"))
+    for i in reader:
+        #Iterate through each line in the csv file
+        #Check line is not EOF
+        if i:
+            #CSV row values stored in an array
+            a = actor.Actor()
+            a.name = i[0]
+            a.email = i[1]
+            if i[2] == "1":
+                #If the third element is 1, the actor is a
+                #pupil, so has an additional year column
+                a.additional_info["Year"] = i[3]
+            #Password is automatically encrypted when put
+            #into the actor class
+            a.password = "Password"
+            a.rights = int(i[2])
+            
+            a.generate()
+
+def insertClassesFromCSV(csv_content):
+    """Inserts classes stored in a csv file into the
+    database
+    Does not support backup csv's, and csv must be in form:
+    
+    Class name, Description, Teacher ID
+    Class id is automatically assigned"""
+    
+    #Import the schoolclass so we can use its methods in
+    #this function
+    import schoolclass
+    
+    #Initialise the csv reader and split on newline
+    reader = csv.reader(csv_content.split("\n"))
+    for i in reader:
+        #Iterate through each line in the csv file
+        #Check line is not EOF
+        if i:
+            #CSV values stored in an array
+            class_ = schoolclass.Class()
+            class_.name = i[0]
+            class_.description = i[1]
+            class_.teacher_id = i[2]
+            
+            class_.generate()
+
+
+def forwardYear():
+    """Moves the schoolyear forward by one
+    Increases all pupils schoolyears.
+    Deletes all pupils in year 14"""
+    
+    databaseHandler.incrementSchoolYear()
+    databaseHandler.deleteYear14()
+
+
+
+def restoreFromCSV():
+    """Call this function once a tarfile, restore.tar.gz
+    has been placed in the current directory (ie, the
+    folder that the interpreter was called in)
+    
+    Restores from that backup file.
+    Overwrites current database with backup!"""
+    
+    #Library for file operations
+    import shutil
+    
+    #Check the archive actually exists
+    if not os.path.exists("restore.tar.gz"):
+        #If not, quit the function
+        return 1
+    #Extract the backup tar
+    extractFolder()
+    
+    #Build a new database
+    databaseHandler.rebuildDB()
+    
+    #Insert the values of each csv file into the database
+    databaseHandler.insertIntoActors(getDataFromCSV(os.path.join("backup","users")))
+    databaseHandler.insertIntoClasses(getDataFromCSV(os.path.join("backup","classes")))
+    databaseHandler.insertIntoPupils(getDataFromCSV(os.path.join("backup","pupils")))
+    databaseHandler.insertIntoHomework(getDataFromCSV(os.path.join("backup","homework")))
+    databaseHandler.insertIntoHomeworkset(getDataFromCSV(os.path.join("backup","homework_set")))
+    databaseHandler.insertIntoClassmembers(getDataFromCSV(os.path.join("backup","class_members")))
+    
+    #Delete the backup folder and tarfile
+    shutil.rmtree("backup")
+    os.remove("restore.tar.gz")
+    
+
+def getDataFromCSV(csv_filepath):
+    """Converts a csv file into an array of rows"""
+    
+    #Open csv file
+    with open(csv_filepath) as csv_file:
+        #Read file
+        csv_reader = csv.reader(csv_file)
+        values = []
+        for i in csv_reader:
+            #Iteratively append row into array
+            values.append(i)
+    
+    return values
+
+def extractFolder():
+    """Extracts the folder name restore.tar.gz into the
+    working directory"""
+    import tarfile
+    
+    tar = tarfile.open("restore.tar.gz", "r:gz")
+    tar.extractall(".")
+    tar.close()
+
+
+def backupToCSV():
+    """Backups up the database into a tarfile, which is
+    then saved in the working directory"""
+    
+    #Library for file operations
+    import shutil
+    
+    #See if a backup folder already exists
+    # - if not create one
+    if not os.path.exists("backup"):
+        os.mkdir("backup")
+    #Delete the previous tarfile, if it exists
+    if os.path.exists("backup.tar.gz"):
+        os.remove("backup.tar.gz")
+    
+    #Backup each table to it's own csv file inside backup
+    #folder
+    backupUsersToCSV()
+    backupPupilsToCSV()
+    backupClassesToCSV()
+    backupClassMembersToCSV()
+    backupHomeworkToCSV()
+    backupHomeworkSetToCSV()
+    
+    #Compress the backup folder and delete the folder
+    tarFolder()
+    shutil.rmtree("backup")
+
+
+def backupUsersToCSV():
+    """Backups the actors table"""
+    
+    #Get actors table from database
+    userdata = databaseHandler.getAllUserData()
+    #Write the data to the csv file
+    writeToCSV(os.path.join("backup","users"),userdata)
+
+def backupPupilsToCSV():
+    """Backups the pupils table"""
+    
+    #Get pupils table from database
+    pupildata = databaseHandler.getAllRawPupilData()
+    #Write the data to the csv file
+    writeToCSV(os.path.join("backup","pupils"),pupildata)
+
+def backupClassesToCSV():
+    """Backups the classes table"""
+    
+    #Get classes table from database
+    classdata = databaseHandler.getAllRawClassData()
+    #Write the data to the csv file
+    writeToCSV(os.path.join("backup","classes"),classdata)
+
+def backupClassMembersToCSV():
+    """Backups the class members table"""
+    
+    #Get class members table from database
+    memberdata = databaseHandler.getAllRawClassMemberData()
+    #Write the data to the csv file
+    writeToCSV(os.path.join("backup","class_members"),memberdata)
+
+def backupHomeworkToCSV():
+    """Backups the homework table"""
+    
+    #Get homework table from database
+    homeworkdata = databaseHandler.getAllRawHomeworkData()
+    #Write the data to the csv file
+    writeToCSV(os.path.join("backup","homework"),homeworkdata)
+
+def backupHomeworkSetToCSV():
+    """Backups the homework set table"""
+    
+    #Get homework set table from database
+    setdata = databaseHandler.getAllRawHomeworkSetData()
+    #Write the data to the csv file
+    writeToCSV(os.path.join("backup","homework_set"),setdata)
+
+def tarFolder():
+    """Zips up folder called backup.tar.gz in the working
+    directory"""
+    import tarfile
+    tar = tarfile.open("backup.tar.gz", "w:gz")
+    tar.add("backup")
+    tar.close()
+    
+
+
+def writeToCSV(filename, data):
+    """Writes data to a csv file"""
+    
+    #Opens the file with the given filename
+    with open(filename, "wb") as csvfile:
+        #Initialise the csv writer to be comma delimited
+        csvwriter = csv.writer(csvfile, delimiter=",")
+        for i in data:
+            #Iteratively write each row in the dataset
+            csvwriter.writerow(i)

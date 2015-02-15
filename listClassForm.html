@@ -1,0 +1,80 @@
+<h1>List classes</h1>
+<div class="wrapper" style="width:400px;">
+    Select class to view.
+    
+    <div class="tableScrollWrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody id="classesTbody">
+        </tbody>
+    </table>
+    </div>
+    
+    <input style="margin-top: 0px; width: 402px;" type="text" class="textbox" id="search" placeholder="Search" />
+    
+    <form action="class_action.py" method="get">
+        <input type="hidden" name="class" id="class" />
+        
+        <input type="submit" style="width: 188px;" name="edit" class="button" value="View class" />
+        <input type="submit" style="width: 188px; margin-left: 20px;" name="delete" class="button" value="Delete class" />
+    </form>
+</div>
+
+<script>
+    classes = [$classes]
+    
+    selectedClasses = classes;
+    selectedClass = -1;
+    
+    populateTable();
+    
+    function selectClass(i) {
+        if (i != selectedClass) {
+            $("#class-"+i).css("background-color","#2ecc71");
+            $("#class-"+selectedClass).css("background-color","#fff");
+            selectedClass = i;
+            $("#class").val(selectedClasses[i][0]);
+        } else {
+            selectedClass = -1;
+            $("#class-"+i).css("background-color","#fff");
+            $("#class").val("");
+        }
+    }
+    
+    function populateTable() {
+        var tableData = "";
+        
+        for (i=0;i<selectedClasses.length;i++) {
+            id = selectedClasses[i][0];
+            
+            tableData += "<tr id='class-"+i+"' onclick='selectClass("+i+")'";
+            if (selectedClass == i) {
+                tableData += "style='background-color: #2ecc71'";
+            }
+            tableData += "><td>";
+            tableData += selectedClasses[i][1];
+            tableData += "</td></tr>";
+        }
+        
+        $("#classesTbody").html(tableData);
+    }
+    
+    $("#search").on("input", function(e) {
+        text = $("#search").val().toLowerCase();
+        
+        //Using linear search as binary search would not allow searching in middle of words
+        //Linear search is fast enough for most reasonably sized datasets anyway
+        selectedClasses = [];
+        for (i=0;i<classes.length;i++) {
+            if (classes[i][1].toLowerCase().indexOf(text) > -1) {
+                selectedClasses.push(classes[i]);
+            }
+        }
+        
+        populateTable();
+    });
+</script>

@@ -1,0 +1,92 @@
+<h1>Add class</h1>
+<div class="wrapper" style="width:400px;">
+    <form action="try_addclass.py" method="post">
+        <input type="hidden" id="pupils" name="pupils" />
+        
+        <input style="margin-top: 0px;" type="text" class="textbox $nameProblem" name="name" placeholder="Class Name" value="" />
+        <textarea style="height: 7em;" class="textbox $descriptionProblem" name="description" placeholder="Class Description" value="" /></textarea>
+        <br /><br />
+        
+        <div class="tableScrollWrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:80%;">Name</th>
+                    <th style="width:20%;">Year</th>
+                </tr>
+            </thead>
+            <tbody id="pupilsTbody">
+            </tbody>
+        </table>
+        </div>
+        <input style="margin-top: 0px;" type="text" class="textbox" id="search" placeholder="Search" />
+        <br />
+        <input type="checkbox" onchange="selectedOnly = 1-selectedOnly;populateTable()" class="radio" id="show_selected" value="show_selected" /> <label for="show_selected"><span></span>Show selected</label>
+        
+        <input type="submit" class="button" value="Add class" />
+    </form>
+</div>
+
+<script>
+    pupils = [$pupils]
+    
+    selectedOnly = 0;
+    selectedPupils = pupils;
+    selectPupilIds = [];
+    
+    populateTable();
+    
+    function selectPupil(id) {
+        idIndex = selectPupilIds.indexOf(id)
+        if (idIndex == -1) {
+            selectPupilIds.push(id);
+            $("#pupil-"+id).css("background-color","#2ecc71");
+        } else {
+            selectPupilIds.splice(idIndex,1);
+            $("#pupil-"+id).css("background-color","#fff");
+        }
+        
+        selectedPupilVal = ""
+        for (i=0;i<selectPupilIds.length;i++) {
+            selectedPupilVal += selectPupilIds[i]
+            selectedPupilVal += ","
+        }
+        $("#pupils").val(selectedPupilVal);
+    }
+    
+    function populateTable() {
+        var tableData = "";
+        
+        for (i=0;i<selectedPupils.length;i++) {
+            id = selectedPupils[i][0];
+            if (selectedOnly == 0 || (selectedOnly == 1 && selectPupilIds.indexOf(id) > -1)) {
+                tableData += "<tr id='pupil-"+id+"' onclick='selectPupil("+id+")'";
+                if (selectPupilIds.indexOf(id) > -1) {
+                    tableData += "style='background-color: #2ecc71'";
+                }
+                tableData += "><td>";
+                tableData += selectedPupils[i][1];
+                tableData += "</td><td>";
+                tableData += selectedPupils[i][2];
+                tableData += "</tr>";
+            }
+        }
+        
+        $("#pupilsTbody").html(tableData);
+    }
+    
+    $("#search").on("input", function(e) {
+        text = $("#search").val().toLowerCase();
+        
+        //Using linear search as binary search would not allow searching in middle of words
+        //Linear search is fast enough for most reasonably sized datasets anyway
+        selectedPupils = [];
+        for (i=0;i<pupils.length;i++) {
+            if (pupils[i][1].toLowerCase().indexOf(text) > -1 || String(pupils[i][2]).indexOf(text) > -1) {
+                selectedPupils.push(pupils[i]);
+            }
+        }
+        
+        populateTable();
+    });
+</script>

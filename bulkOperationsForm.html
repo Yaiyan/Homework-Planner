@@ -1,0 +1,34 @@
+Use this page to bulk add users via csv files. The expected format for the various csv files is listed under the heading for the section.
+<br /><br />
+NOTE: Uploading backup files here will result in error.
+
+<form enctype="multipart/form-data" action="bulk_add.py?type=user" method="post">
+    <h2>Bulk add users</h2>
+    Name, Email, Rights, [Year group if rights=1]
+    <br /><br />
+    <input type="file" name="file" />
+    <input type="submit" class="button" style="width: 300px;" value="Upload" />
+</form>
+
+<form enctype="multipart/form-data" action="bulk_add.py?type=class" method="post">
+    <h2>Bulk add classes</h2>
+    Class name, Description, Teacher ID
+    <br /><br />
+    <input type="file" name="file" />
+    <input type="submit" class="button" style="width: 300px;" value="Upload" />
+</form>
+
+<h2>Move forward 1 year</h2>
+Increases every pupils year by 1. Deletes all pupils in year 14.
+<br />
+Note: To keep year 13 pupils from deletion, move them down to year 12.
+
+<a href="forwardYear.py" class="button" style="width: 300px;display: block;">Increment year</a>
+
+<script>
+    error = "$Error";
+    
+    if (error == "true") {
+        alert("Error carrying out operation. Ensure file follows correct format.")
+    }
+</script>

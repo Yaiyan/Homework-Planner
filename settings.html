@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title>Homework</title>
+        
+        <link href='http://fonts.googleapis.com/css?family=Andika' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        
+        <link href='style.css' rel='stylesheet' type='text/css'>
+    </head>
+    
+    <body>
+        <!-- Navbar -->
+        <br /><br /><br />
+        <div class="centreBox">
+            <h1>Settings</h1>
+            <div class="wrapper" style="width:400px;">
+                Warning: changing email changes login details!
+                
+                <br /><br />
+                
+                <form action="change_settings.py" method="post">
+                    <input type="text" class="textbox $emailProblem" name="email" placeholder="Email" value="$Email" />
+                    <br />
+                    
+                    <br /><br />
+                    
+                    <input type="password" class="textbox $passwordProblem" name="password" placeholder="Password" />
+                    <input type="password" class="textbox $passwordProblem" name="password2" placeholder="Confirm password" />
+                    
+                    <input type="submit" class="button" value="Edit" />
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

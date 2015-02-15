@@ -1,0 +1,19 @@
+Use this page to download, and restore from backups.
+<br /><br />
+<a href="try_backup.py" class="button" style="width:300px">Backup</a>
+
+<form enctype="multipart/form-data" action="restore.py?type=class" method="post">
+    <h2>Restore</h2>
+    Warning, will wipe database and recover to state at time of backup.
+    <br /><br />
+    <input type="file" name="file" />
+    <input type="submit" class="button" style="width: 300px;" value="Restore" />
+</form>
+
+<script>
+    error = "$Error";
+    
+    if (error == "restore") {
+        alert("Error restoring from backup - ensure you uploaded the correct backup file.")
+    }
+</script>

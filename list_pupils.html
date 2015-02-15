@@ -1,0 +1,100 @@
+<html>
+    <head>
+        <title>Homework</title>
+        
+        <link href='http://fonts.googleapis.com/css?family=Andika' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        
+        <link href='style.css' rel='stylesheet' type='text/css'>
+    </head>
+    
+    <body>
+        <!-- Navbar -->
+        <br /><br /><br />
+        <div class="centreBox">
+            <h1>Pupil list</h1>
+            <div style="width: 400px;" class="wrapper">
+                Select pupil to view percentage of homework complete.
+                <br /><br />
+                
+                <div class="tableScrollWrapper" style="width:398px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 80%">Name</th>
+                            <th style="width: 20%">Year</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pupilsTbody">
+                    </tbody>
+                </table>
+                </div>
+                <input style="margin-top: 0px;" type="text" class="textbox" id="search" placeholder="Search" />
+                <br />
+                <a href="list_allpupils.py" style="color:black">Printable list</a>
+                <br /><br />
+                
+                <iframe style="border: none;" id="homeworkIframe"></iframe>
+            </div>
+        </div>
+        
+        <script>
+            pupils = [$pupils]
+            
+            selectedPupils = pupils;
+            selectPupilId = -1;
+            
+            populateTable();
+            
+            function selectPupil(id) {
+                $("#pupil-"+selectPupilId).css("background-color","#fff");
+                if (selectPupilId != id) {
+                    selectPupilId = id;
+                    $("#pupil-"+id).css("background-color","#2ecc71");
+                    $("#homeworkIframe").prop("src","homeworkpercentage.py?id="+id);
+                } else {
+                    selectPupilId = -1;
+                    $("#homeworkIframe").prop("src","");
+                }
+            }
+            
+            function populateTable() {
+                var tableData = "";
+                
+                for (i=0;i<selectedPupils.length;i++) {
+                    id = selectedPupils[i][0];
+                    
+                    tableData += "<tr id='pupil-"+id+"' onclick='selectPupil("+id+")'";
+                    if (selectPupilId == id) {
+                        tableData += "style='background-color: #2ecc71'";
+                    }
+                    tableData += "><td>";
+                    tableData += selectedPupils[i][1];
+                    tableData += "</td><td>";
+                    tableData += selectedPupils[i][2];
+                    tableData += "</td></tr>";
+                }
+                
+                $("#pupilsTbody").html(tableData);
+            }
+            
+            $("#search").on("input", function(e) {
+                text = $("#search").val().toLowerCase();
+                
+                //Using linear search as binary search would not allow searching in middle of words
+                //Linear search is fast enough for most reasonably sized datasets anyway
+                selectedPupils = [];
+                for (i=0;i<pupils.length;i++) {
+                    if (pupils[i][1].toLowerCase().indexOf(text) > -1 || String(pupils[i][2]).indexOf(text) > -1) {
+                        selectedPupils.push(pupils[i]);
+                    }
+                }
+                
+                populateTable();
+            });
+        </script>
+    </body>
+</html>

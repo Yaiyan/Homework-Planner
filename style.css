@@ -1,0 +1,520 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #fff;
+}
+
+strong {
+    margin-left: -1em;
+    line-height: 40px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Andika', sans-serif;
+    color: #e74c3c;
+    font-weight: 100;
+}
+
+h1 {
+    font-size: 30px;
+    line-height: 50px;
+    margin-left: 5px;
+    margin-top: 0px;
+}
+
+h1 > a {
+    text-decoration: inherit;
+    color: inherit;
+}
+
+h1 > a:hover {
+    text-decoration: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.textbox {
+    height: 40px;
+    font-size: 20px;
+    padding-left: 5px;
+    font-family: 'Open Sans', sans-serif;
+    border: 1px solid #bdc3c7;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.textbox:focus {
+    outline: 0;
+    box-shadow: 0 0 2px #2980b9;
+}
+
+.dropdown {
+    width: 10em;
+    background-color: #fff;
+    min-height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    padding-left: 5px;
+    font-family: 'Open Sans', sans-serif;
+    border: 1px solid #bdc3c7;
+    display: inline-block;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.dropdownOptions {
+    display: none;
+    border-top: 1px solid #bdc3c7;
+    margin-left: -5px;
+    line-height: 30px;
+}
+
+.dropdownOption {
+    padding-left: 5px;
+}
+
+.dropdownOption:hover {
+    background-color: #ecf0f1;
+}
+
+.tableScrollWrapper {
+    border: 1px solid #bdc3c7;
+    border-bottom: none;
+    height: 16em; overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-top: 20px;
+    background-color: #fff;
+    width: 400px;
+}
+
+table {
+    width: 100%;
+    background-color: #fff;
+    min-height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+    font-family: 'Open Sans', sans-serif;
+    border-collapse: collapse;
+}
+
+th {
+    font-weight: 900;
+    text-align: left;
+}
+
+tr {
+    border-bottom: 1px solid #bdc3c7;
+}
+
+td, th {
+    padding-left: 5px;
+}
+
+tbody > tr {
+    cursor: pointer;
+}
+
+tbody > tr:hover {
+    background-color: #ecf0f1;
+}
+
+tbody {
+    height: 50px;
+    overflow: auto;
+}
+
+.problem {
+    box-shadow: 0 0 4px 2px #e74c3c;
+}
+
+.button {
+    height: 35px;
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 36px;
+    border: 1px solid #2980b9;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 20px;
+    background: -webkit-linear-gradient(bottom, #2980b9, #3498db);
+    background: linear-gradient(to top, #2980b9, #3498db);
+    color: #ecf0f1 !important;
+    text-align: center;
+    cursor: pointer;
+}
+
+.button:hover {
+    background: -webkit-linear-gradient(top, #2980b9, #3498db);
+    background: linear-gradient(to bottom, #2980b9, #3498db);
+    text-decoration: none;
+}
+
+.button:focus {
+    outline: none;
+}
+
+input:disabled {
+    background-color: #eeeeeb;
+}
+
+.disabled {
+    background-color: #eeeeeb !important;
+    box-shadow: none !important;
+    border: 1px solid #bdc3c7 !important;
+    color: #aaa;
+}
+
+.radio {
+    display: none;
+}
+
+.radio + label span {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin: 2px;
+    margin-right: 5px;
+    vertical-align: text-bottom;
+    background: -webkit-linear-gradient(bottom, #2980b9, #3498db);
+    background: linear-gradient(to top, #2980b9, #3498db);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.radio + label {
+    cursor: text;
+}
+
+.radio:checked + label span {
+    background: -webkit-linear-gradient(top, #d35400, #e67e22); -19px;
+    background: linear-gradient(to bottom, #d35400, #e67e22); -19px;
+}
+
+.radio:disabled + label span {
+    background: -webkit-linear-gradient(top, #bdc3c7, #ecf0f1); -19px;
+    background: linear-gradient(to bottom, #bdc3c7, #ecf0f1); -19px;
+}
+
+.textarea {
+    width: 200px;
+    border: none;
+    font-size: 10pt;
+    border-bottom: 1px solid grey;
+    font-family: inherit;
+}
+
+.textarea:empty:before {
+    content: attr(placeholder);
+    color: #aaa;
+}
+
+.textarea:focus {
+    border-bottom: 1px solid #2980b9;
+    outline: 0;
+}
+
+.toggleBox {
+    width: 50px;
+    height: 30px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.on {
+    border: 1px solid #27ae60;
+    box-shadow: inset -20px -15px 25px #27ae60;
+    background-color: #2ecc71;
+}
+
+.off {
+    border: 1px solid #c0392b;
+    box-shadow: inset -20px -15px 25px #c0392b;
+    background-color: #e74c3c;
+}
+
+/* Title box stuff */
+
+#titleBox {
+    width: 100%;
+    height: 50px;
+    background-color: #ecf0f1;
+    position: fixed;
+    box-shadow: 0 0 2px #bdc3c7;
+}
+
+#titleBox h1 {
+    font-family: 'Andika', sans-serif;
+    font-size: 30px;
+    font-weight: 100;
+    line-height: 50px;
+    margin-left: 10px;
+    margin-top: 0px;
+    color: #e74c3c;
+    float: left;
+}
+
+#titleBox > #username {
+    float: right;
+    line-height: 50px;
+    margin-right: 25px;
+}
+
+#titleBox > #username:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#titleBox > #dropDown {
+    height: 130px;
+    width: 180px;
+    position: absolute;
+    top: 51px;
+    right: 20px;
+    font-size: 12px;
+    background-color: #fff;
+    border: 1px solid #bdc3c7;
+    box-shadow: 0 0 2px #bdc3c7;
+    display: none;
+}
+
+#titleBox > #dropDown .button {
+    border-radius: 0px;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 40px;
+    margin-left: -1px;
+    
+    line-height: 40px;
+    margin-top: 20px;
+}
+
+#titleBox > #dropDown .contents {
+    margin: 10px;
+}
+
+#titleBox > #dropDown strong {
+    margin-left: 0;
+    line-height: inherit;
+}
+
+
+/* Menu box stuff */
+
+#menuBox {
+    float: left;
+    margin-left: 20px;
+    width: 250px;
+    height: 500px;
+    background-color: #fff;
+}
+
+#menuBox a {
+    color: #000;
+    padding-left: 7px;
+}
+
+#menuBox a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#menuBox .selected {
+    color: #e74c3c;
+    padding-left: 5px;
+    border-left: 2px solid #e74c3c;
+}
+
+#menuBox .selected:hover {
+    text-decoration: none;
+}
+
+#menuBox .searchBar {
+    width: 8em;
+    border: 1px solid grey;
+    border-radius: 5px;
+}
+
+#menuBox .searchBar:focus {
+    box-shadow: 0px 0px 5px #2980b9;
+    border: 1px solid #2980b9;
+    outline: 0;
+}
+
+
+/* Content box stuff */
+
+#contentBox {
+    float: left;
+    margin-left: 20px;
+    height: 500px;
+    background-color: #fff;
+}
+
+#contentBox .indent {
+    margin-left: 1em;
+    display: block;
+}
+
+#contentBox #due-Old {
+    display: none;
+}
+
+#contentBox .homeworkItem {
+    display: block;
+    width: 380px;
+}
+
+#contentBox .homeworkTitle {
+    line-height: 40px;
+}
+
+#contentBox .homeworkInformation {
+    display: inline-block;
+    margin-left: 1em;
+    font-size: 10pt;
+}
+
+#contentBox .homeworkInformation p {
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+#contentBox a {
+    color: #000;
+}
+
+#contentBox .linedTextbox {
+    border: none;
+    border-bottom: 1px solid grey;
+    width: 200px;
+    font-size: 10pt;
+    font-family: inherit;
+}
+
+#contentBox .linedTextbox:focus {
+    outline: 0;
+    border-bottom: 1px solid #2980b9;
+}
+
+
+/* Login stuff */
+
+#loginBox {
+    width: 400px;
+    height: 300px;
+    background-color: #ecf0f1;
+    box-shadow: -1px 1px 1px #bdc3c7;
+    margin: 200px auto;
+    border-radius: 5px;
+    
+    text-align: center;
+}
+
+#loginBox h1 {
+    font-family: 'Andika', sans-serif;
+    font-size: 30px;
+    font-weight: 100;
+    line-height: 80px;
+    color: #e74c3c;
+}
+
+#loginBox .textbox {
+    width: 300px;
+}
+
+#loginBox .button {
+    width: 300px;
+}
+
+#loginBox .wrapper {
+    width: 300px;
+    text-align: left;
+    margin: 0 auto;
+    margin-top: -10px;
+}
+
+
+/* Centre box stuff */
+
+.centreBox {
+    width: 500px;
+    background-color: #ecf0f1;
+    box-shadow: -1px 1px 1px #bdc3c7;
+    margin: 0 auto;
+    margin-top: 40px;
+    padding-bottom: 20px;
+    border-radius: 5px;
+    
+    text-align: center;
+}
+
+.centreBox h1 {
+    font-family: 'Andika', sans-serif;
+    font-size: 30px;
+    font-weight: 100;
+    line-height: 80px;
+    color: #e74c3c;
+}
+
+.centreBox .textbox {
+    width: 400px;
+}
+
+.centreBox .button {
+    width: 400px;
+}
+
+.centreBox .wrapper {
+    width: 400px;
+    text-align: left;
+    margin: 0 auto;
+    margin-top: -10px;
+}
+
+
+/* Sign up stuff */
+
+#settingsBox {
+    width: 500px;
+    height: 500px;
+    background-color: #ecf0f1;
+    box-shadow: -1px 1px 1px #bdc3c7;
+    margin: 100px auto;
+    border-radius: 5px;
+    
+    text-align: center;
+}
+
+#settingsBox h1 {
+    font-family: 'Andika', sans-serif;
+    font-size: 30px;
+    font-weight: 100;
+    line-height: 80px;
+    color: #e74c3c;
+}
+
+#settingsBox .textbox {
+    width: 400px;
+}
+
+#settingsBox .button {
+    width: 400px;
+}
+
+#settingsBox .wrapper {
+    width: 400px;
+    text-align: left;
+    margin: 0 auto;
+    margin-top: -10px;
+}

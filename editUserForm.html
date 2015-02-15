@@ -1,0 +1,269 @@
+Before editing, select user in the table below.
+<br />
+Warning: changing the email changes login details!
+<br /><br />
+<form action="try_edituser.py" method="post">
+    <input type="hidden" id="id" name="id" />
+    <input type="hidden" id="year" name="year" />
+    <input type="hidden" id="delete" name="delete" />
+    User ID: <span id="idText">$idVal</span>
+    <br /><br />
+    <input type="text" class="textbox $nameProblem" style="width: 400px; margin-top: 0px;" id="name" name="name" placeholder="Name" value="$nameVal" disabled />
+    <input type="text" class="textbox $emailProblem" style="width: 400px;" id="email" name="email" placeholder="Email" value="$emailVal" disabled />
+    <br /><br />
+    <span style="line-height: 20px;">
+        <input type="radio" class="radio" name="rights" id="pupil" value="pupil" onchange="toggleChanged()" checked disabled /> <label for="pupil"><span></span>Pupil</label>
+        <input type="radio" class="radio" name="rights" id="teacher" value="teacher" onchange="toggleChanged()" disabled /> <label for="teacher"><span></span>Teacher</label>
+        <input type="radio" class="radio" name="rights" id="admin" value="admin" onchange="toggleChanged()" disabled /> <label for="admin"><span></span>Admin</label>
+    </span>
+    <br />
+    
+    <div class="dropdown disabled" id="yearDropdownMenu" style="width:150px;" onclick="toggleClassDropdown()">
+        <span id="yearGroup" style="color: #aaa;">Year</span>
+        <br />
+        <div class="dropdownOptions" id="yearDropdown">
+            <div class="dropdownOption" onClick="setYear(7)">7</div>
+            <div class="dropdownOption" onClick="setYear(8)">8</div>
+            <div class="dropdownOption" onClick="setYear(9)">9</div>
+            <div class="dropdownOption" onClick="setYear(10)">10</div>
+            <div class="dropdownOption" onClick="setYear(11)">11</div>
+            <div class="dropdownOption" onClick="setYear(12)">12</div>
+            <div class="dropdownOption" onClick="setYear(13)">13</div>
+        </div>
+    </div>
+    
+    <input type="password" class="textbox $passwordProblem" style="width: 400px;" id="password" name="password" placeholder="New Password" disabled />
+    <input type="password" class="textbox $passwordProblem" style="width: 400px;" id="password2" name="password2" placeholder="Confirm password" disabled />
+    <br /><br />
+    <div style="line-height:30px;">Delete user? <div class="toggleBox disabled off" id="deleteToggle" onmousedown="toggleDelete()">-</div></div>
+    <input type="submit" class="button" style="width: 400px;" value="Save" />
+</form>
+
+<div class="tableScrollWrapper">
+<table>
+    <thead>
+        <tr>
+            <th style="width:75%;">Name</th>
+            <th style="width:25%;text-align: center;">Type</th>
+        </tr>
+    </thead>
+    <tbody id="usersTbody">
+    </tbody>
+</table>
+</div>
+<input style="margin-top: 0px; width: 400px" type="text" class="textbox" id="search" placeholder="Search" />
+<br /><br />
+
+<script src="algorithms.js"></script>
+<script>
+    users = [$users]
+    
+    selectedUsers = users;
+    selectedUser = -1;
+    deleteUser = 0;
+    
+    users = quicksort(users);
+    
+    populateTable();
+    
+    if ($userID > -1) {
+        selectUser($userID, false);
+        $("#id").val($userID);
+        
+        switch ($rightsVal) {
+            case 1:
+                $("#pupil").prop("checked", true);
+                setYear(user[5])
+                break;
+            case 2:
+                $("#teacher").prop("checked", true);
+                break;
+            case 3:
+                $("#admin").prop("checked", true);
+                break;
+        }
+    }
+    
+    users = quicksortString(users);
+    
+    populateTable()
+    
+    function selectUser(id, setValues) {
+        if (typeof setValues == "undefined") {
+            setValues = true;
+        }
+        
+        if (id != selectedUser) {
+            $("#user-"+id).css("background-color","#2ecc71");
+            $("#user-"+selectedUser).css("background-color","");
+            selectedUser = id;
+        } else {
+            selectedUser = -1;
+            $("#user-"+id).css("background-color","");
+        }
+        
+        setFormValues(setValues);
+        toggleChanged()
+    }
+    
+    function setFormValues(setValues) {
+        if (typeof setValues == "undefined") {
+            setValues = true;
+        }
+        
+        if (setValues) {
+            $("#id").val("");
+            $("#idText").html("n/a");
+            $("#name").val("");
+            $("#email").val("");
+            $("#password").val("");
+            $("#password").val("");
+            $("#pupil").prop("checked", true);
+            $("#delete").val(0);
+            $("#name").removeClass("problem");
+            $("#email").removeClass("problem");
+            $("#password").removeClass("problem");
+            $("#password2").removeClass("problem");
+        }
+        deleteUser = 0;
+        
+        if (selectedUser > -1) {
+            users = quicksort(users);
+            user = users[binarySearch(users,selectedUser)];
+            users = quicksortString(users);
+            $("#name").prop("disabled", false);
+            $("#email").prop("disabled", false);
+            $("#pupil").prop("disabled", false);
+            $("#teacher").prop("disabled", false);
+            $("#admin").prop("disabled", false);
+            $("#password").prop("disabled", false);
+            $("#password2").prop("disabled", false);
+            $("#yearDropdownMenu").removeClass("disabled");
+            $("#deleteToggle").removeClass("disabled");
+            $("#deleteToggle").html("No");
+            
+            
+            if (setValues) {
+                $("#id").val(user[0]);
+                $("#idText").html(user[0]);
+                $("#name").val(user[1]);
+                $("#email").val(user[2]);
+                switch (user[3]) {
+                    case 1:
+                        $("#pupil").prop("checked", true);
+                        setYear(user[5])
+                        break;
+                    case 2:
+                        $("#teacher").prop("checked", true);
+                        break;
+                    case 3:
+                        $("#admin").prop("checked", true);
+                        break;
+                }
+            }
+            
+            colourToggle();
+        } else {
+            $("#name").prop("disabled", true);
+            $("#email").prop("disabled", true);
+            $("#pupil").prop("disabled", true);
+            $("#teacher").prop("disabled", true);
+            $("#admin").prop("disabled", true);
+            $("#password").prop("disabled", true);
+            $("#password2").prop("disabled", true);
+            $("#yearDropdownMenu").addClass("disabled");
+            $("#deleteToggle").addClass("disabled");
+            $("#deleteToggle").html("-");
+            $("#yearGroup").html("Year");
+            $("#yearGroup").css("color","#aaa");
+        }
+    }
+    
+    function populateTable() {
+        var tableData = "";
+        
+        for (i=0;i<users.length;i++) {
+            id = users[i][0];
+            index = selectedUsers.indexOf(users[i]);
+            if (index > -1) {
+                tableData += "<tr id='user-"+id+"' onclick='selectUser("+id+")'";
+                if (selectedUser == id) {
+                    tableData += "style='background-color: #2ecc71'";
+                }
+                tableData += "><td>";
+                tableData += selectedUsers[index][1];
+                tableData += "</td><td style='text-align: center;'>";
+                switch (selectedUsers[index][3]) {
+                case 1:
+                    tableData += "Pupil";
+                    break;
+                case 2:
+                    tableData += "Teacher";
+                    break;
+                case 3:
+                    tableData += "Admin";
+                    break;
+            }
+                tableData += "</tr>";
+            }
+        }
+        
+        $("#usersTbody").html(tableData);
+    }
+    
+    $("#search").on("input", function(e) {
+        text = $("#search").val().toLowerCase();
+        
+        //Using linear search as binary search would not allow searching in middle of words
+        //Linear search is fast enough for most reasonably sized datasets anyway
+        selectedUsers = [];
+        for (i=0;i<users.length;i++) {
+            if (users[i][1].toLowerCase().indexOf(text) > -1 || users[i][4].toLowerCase().indexOf(text) > -1) {
+                selectedUsers.push(users[i]);
+            }
+        }
+        
+        populateTable();
+    });
+    
+    function setYear(year) {
+        $("#yearGroup").html("Year "+year);
+        $("#yearGroup").css("color", "#000");
+        $("#year").val(year);
+    }
+    
+    function toggleClassDropdown() {
+        if (selectedUser > -1) {
+            $("#yearDropdown").toggle();
+        }
+    }
+    
+    function toggleChanged() {
+        if ($("#pupil").prop("checked")) {
+            $("#yearDropdownMenu").css("display","block");
+        } else {
+            $("#yearDropdownMenu").css("display","none");
+        }
+    }
+    
+    function toggleDelete() {
+        deleteUser = 1-deleteUser;
+        $("#delete").val(deleteUser);
+        colourToggle();
+    }
+    
+    function colourToggle() {
+        if (!$("#deleteToggle").hasClass("disabled")) {
+            $("#deleteToggle").removeClass("off");
+            $("#deleteToggle").removeClass("on");
+            
+            if (deleteUser == 1) {
+                $("#deleteToggle").addClass("on");
+                $("#deleteToggle").html("Yes");
+            } else {
+                $("#deleteToggle").addClass("off");
+                $("#deleteToggle").html("No");
+            }
+        }
+    }
+</script>

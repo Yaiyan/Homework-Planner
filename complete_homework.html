@@ -1,0 +1,112 @@
+<html>
+    <head>
+        <title>Homework</title>
+        
+        <link href='http://fonts.googleapis.com/css?family=Andika' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        
+        <link href='style.css' rel='stylesheet' type='text/css'>
+    </head>
+    
+    <body>
+        <!-- Navbar -->
+        <br /><br /><br />
+        <div class="centreBox">
+            <h1>Finished by</h1>
+            <div style="width: 400px;" class="wrapper">
+                Highlight pupils who have finished the homework green in the table below.
+                <br /><br />
+                
+                <div class="tableScrollWrapper" style="width:398px;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pupilsTbody">
+                    </tbody>
+                </table>
+                </div>
+                <input style="margin-top: 0px;" type="text" class="textbox" id="search" placeholder="Search" />
+                
+                <form action="try_completehomework.py" method="post">
+                    <input type="hidden" id="pupils" name="pupils" />
+                    <input type="hidden" value="$id" name="id" />
+                    <input type="submit" class="button" style="width: 400px;" value="Save" />
+                </form>
+            </div>
+        </div>
+        
+        <script>
+            pupils = [$pupils]
+            
+            selectedOnly = 0;
+            selectedPupils = pupils;
+            selectPupilIds = [];
+            
+            for (it=0;it<pupils.length;it++) {
+                if (pupils[it][2] == 1) {
+                    selectPupil(pupils[it][0]);
+                }
+            }
+            
+            populateTable();
+            
+            function selectPupil(id) {
+                idIndex = selectPupilIds.indexOf(id)
+                if (idIndex == -1) {
+                    selectPupilIds.push(id);
+                    $("#pupil-"+id).css("background-color","#2ecc71");
+                } else {
+                    selectPupilIds.splice(idIndex,1);
+                    $("#pupil-"+id).css("background-color","#fff");
+                }
+                
+                selectedPupilVal = ""
+                for (i=0;i<selectPupilIds.length;i++) {
+                    selectedPupilVal += selectPupilIds[i]
+                    selectedPupilVal += ","
+                }
+                $("#pupils").val(selectedPupilVal);
+            }
+            
+            function populateTable() {
+                var tableData = "";
+                
+                for (i=0;i<selectedPupils.length;i++) {
+                    id = selectedPupils[i][0];
+                    if (selectedOnly == 0 || (selectedOnly == 1 && selectPupilIds.indexOf(id) > -1)) {
+                        tableData += "<tr id='pupil-"+id+"' onclick='selectPupil("+id+")'";
+                        if (selectPupilIds.indexOf(id) > -1) {
+                            tableData += "style='background-color: #2ecc71'";
+                        }
+                        tableData += "><td>";
+                        tableData += selectedPupils[i][1];
+                        tableData += "</td>";
+                    }
+                }
+                
+                $("#pupilsTbody").html(tableData);
+            }
+            
+            $("#search").on("input", function(e) {
+                text = $("#search").val().toLowerCase();
+                
+                //Using linear search as binary search would not allow searching in middle of words
+                //Linear search is fast enough for most reasonably sized datasets anyway
+                selectedPupils = [];
+                for (i=0;i<pupils.length;i++) {
+                    if (pupils[i][1].toLowerCase().indexOf(text) > -1) {
+                        selectedPupils.push(pupils[i]);
+                    }
+                }
+                
+                populateTable();
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,61 @@
+<form action="try_adduser.py" method="get">
+    <input type="hidden" id="year" name="year" />
+    <input type="text" class="textbox $nameProblem" style="width: 300px; margin-top: 0px;" name="name" placeholder="Name" value="$name" />
+    <input type="text" class="textbox $emailProblem" style="width: 300px;" name="email" placeholder="Email" value="$email" />
+    <br /><br />
+    <span style="line-height: 20px;">
+        <input type="radio" class="radio" name="rights" id="pupil" value="pupil" onchange="toggleChanged()" $pupil /> <label for="pupil"><span></span>Pupil</label>
+        <input type="radio" class="radio" name="rights" id="teacher" value="teacher" onchange="toggleChanged()" $teacher /> <label for="teacher"><span></span>Teacher</label>
+        <input type="radio" class="radio" name="rights" id="admin" value="admin" onchange="toggleChanged()" $admin /> <label for="admin"><span></span>Admin</label>
+    </span>
+    <br />
+    
+    <div class="dropdown $yearProblem" id="yearDropdownMenu" style="width: 150px;" onclick="toggleClassDropdown()">
+        <span id="yearGroup" style="color: #aaa;">Year</span>
+        <br />
+        <div class="dropdownOptions" id="yearDropdown">
+            <div class="dropdownOption" onClick="setYear(7)">7</div>
+            <div class="dropdownOption" onClick="setYear(8)">8</div>
+            <div class="dropdownOption" onClick="setYear(9)">9</div>
+            <div class="dropdownOption" onClick="setYear(10)">10</div>
+            <div class="dropdownOption" onClick="setYear(11)">11</div>
+            <div class="dropdownOption" onClick="setYear(12)">12</div>
+            <div class="dropdownOption" onClick="setYear(13)">13</div>
+        </div>
+    </div>
+    
+    <input type="password" class="textbox $passwordProblem" style="width: 300px;" name="password" placeholder="Password" />
+    <input type="password" class="textbox $passwordProblem" style="width: 300px;" name="password2" placeholder="Confirm password" />
+    
+    <input type="submit" class="button" style="width: 300px;" value="Add" />
+</form>
+<br />
+<form enctype="multipart/form-data" action="bulk_add.py?type=user" method="post">
+    <h2>Bulk add users</h2>
+    You can also add new users in bulk by uploading a csv file. The format is available in the manual for this site.
+    <br /><br />
+    <input type="file" name="file" />
+    <input type="submit" class="button" style="width: 300px;" value="Upload" />
+</form>
+
+<script>
+    toggleChanged()
+    
+    function setYear(year) {
+        $("#yearGroup").html("Year "+year);
+        $("#yearGroup").css("color", "#000");
+        $("#year").val(year);
+    }
+    
+    function toggleClassDropdown() {
+        $("#yearDropdown").toggle();
+    }
+    
+    function toggleChanged() {
+        if ($("#pupil").prop("checked")) {
+            $("#yearDropdownMenu").css("display","block");
+        } else {
+            $("#yearDropdownMenu").css("display","none");
+        }
+    }
+</script>

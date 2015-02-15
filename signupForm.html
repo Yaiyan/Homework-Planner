@@ -1,0 +1,50 @@
+<div class="centreBox">
+    <h1>Almost ready</h1>
+    <div class="wrapper" style="width:400px;">
+        You're almost ready to start! We just need to know a few quick things first...
+        
+        <br /><br />
+        
+        <form action="try_signup.py" method="post">
+            <input type="hidden" id="year" name="year" />
+            <input style="margin-top: 0px;" type="text" class="textbox $nameProblem" name="name" placeholder="Name" value="$name" />
+            <input type="text" class="textbox $emailProblem" name="email" placeholder="Email" value="$email" />
+            <br />
+            
+            <div class="dropdown $yearProblem" id="yearDropdownMenu" style="width:150px;" onclick="toggleClassDropdown()">
+                <span id="yearGroup" style="color: #aaa;">Year</span>
+                <br />
+                <div class="dropdownOptions" id="yearDropdown">
+                    <div class="dropdownOption" onClick="setYear(7)">7</div>
+                    <div class="dropdownOption" onClick="setYear(8)">8</div>
+                    <div class="dropdownOption" onClick="setYear(9)">9</div>
+                    <div class="dropdownOption" onClick="setYear(10)">10</div>
+                    <div class="dropdownOption" onClick="setYear(11)">11</div>
+                    <div class="dropdownOption" onClick="setYear(12)">12</div>
+                    <div class="dropdownOption" onClick="setYear(13)">13</div>
+                </div>
+            </div>
+            
+            <br /><br />
+            
+            <input type="password" class="textbox $passwordProblem" name="password" placeholder="Password" />
+            <input type="password" class="textbox $passwordProblem" name="password2" placeholder="Confirm password" />
+            
+            <input type="submit" class="button" value="Done!" />
+        </form>
+    </div>
+</div>
+
+<script>
+    toggleChanged()
+    
+    function setYear(year) {
+        $("#yearGroup").html("Year "+year);
+        $("#yearGroup").css("color", "#000");
+        $("#year").val(year);
+    }
+    
+    function toggleClassDropdown() {
+        $("#yearDropdown").toggle();
+    }
+</script>

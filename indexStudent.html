@@ -1,0 +1,56 @@
+<html>
+    <head>
+        <title>Homework</title>
+        
+        <link href='http://fonts.googleapis.com/css?family=Andika' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        
+        <link href='style.css' rel='stylesheet' type='text/css'>
+        
+        <script>
+            function changeSubject(subject) {
+                for(i=0;i<classes.length;i++) {
+                    $("#subject"+classes[i][0]).removeClass("selected");
+                    $(".class-"+classes[i][0]).css("display","none");
+                }
+                
+                $("#subject"+subject).addClass("selected");
+                $(".class-"+subject).css("display","block");
+                if (subject == 0) {
+                    for(i=0;i<classes.length;i++) {
+                        $(".class-"+classes[i][0]).css("display","block");
+                    }
+                }
+                
+                for (i=0;i<dateSplits.length;i++) {
+                    homeworkCount = 0;
+                    for (j=1;j<dateSplits[i].length;j++) {
+                        if (dateSplits[i][j] == subject || subject == 0) {
+                            homeworkCount += 1
+                        }
+                    }
+                    
+                    if (homeworkCount == 0) {
+                        $("#due-"+dateSplits[i][0]).css("display","none");
+                    } else {
+                        $("#due-"+dateSplits[i][0]).css("display","block");
+                    }
+                }
+            }
+        </script>
+    </head>
+    
+    <body>
+        <!-- Navbar -->
+        <br /><br /><br />
+        <div id="menuBox">
+            <!-- Subjects -->
+        </div>
+        <div id="contentBox">
+            <!-- Homework -->
+        </div>
+    </body>
+</html>

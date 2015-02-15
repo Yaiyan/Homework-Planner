@@ -1,0 +1,80 @@
+<div class="wrapper" style="width:400px;">
+    <!--IEUAN REMEMBER TO ADD VALIDATION! Also, does it need problem code added?-->
+    <form action="$action" method="get">
+        <input type="hidden" name="id" id="id" />
+        <input type="hidden" name="class" id="class" />
+        
+        <input style="margin-top: 0px;" type="text" id="title" class="textbox $TitleProblem" name="title" placeholder="Title" />
+        <textarea style="height: 7em;" id="description" class="textbox $DescriptionProblem" name="description" placeholder="Description" /></textarea>
+        <br /><br />
+        
+        <input type="text" class="textbox $DueProblem" id="due" name="due" placeholder="Due - hh:mm dd/mm/yyyy" />
+        
+        <div class="dropdown $ClassProblem" onclick="toggleClassDropdown()">
+            <span id="className" style="color: #aaa;">Class</span>
+            <br />
+            <div class="dropdownOptions" id="classDropdown">
+                <div class="dropdownOption">No classes</div>
+            </div>
+        </div>
+        
+        <input type="submit" class="button" value="$DoneText" />
+    </form>
+</div>
+
+<script src="algorithms.js"></script>
+<script>
+    classes = [$classes]
+    
+    if (classes.length > 0) {
+        options = ""
+        for (i=0;i<classes.length;i++) {
+            options += "<div class='dropdownOption' onclick='setClass("+i+")'>";
+            options += classes[i][1];
+            options += "</div>"
+        }
+        
+        $("#classDropdown").html(options);
+    }
+    
+    function setClass(class_id) {
+        $("#className").html(classes[class_id][1]);
+        $("#className").css("color", "#000");
+        $("#class").val(classes[class_id][0]);
+    }
+    
+    function toggleClassDropdown() {
+        $("#classDropdown").toggle();
+    }
+    
+    $("#due").on("input", function(e) {
+        text = $("#due").val();
+        
+        if (text.length > lastLength) {
+            switch (text.length) {
+            case 2:
+                $("#due").val(text+":");
+                break;
+            case 5:
+                $("#due").val(text+" ");
+                break
+            case 8:
+                $("#due").val(text+"/");
+                break;
+            case 11:
+                $("#due").val(text+"/");
+                break;
+            case 17:
+                $("#due").val(text.substring(0, text.length-1));
+                break;
+            }
+        } else if (text.length > 0) {
+            if ([2,5,8,11].indexOf(text.length) > -1) {
+                $("#due").val(text.substring(0, text.length-1));
+            }
+        }
+        
+        text = $("#due").val();
+        lastLength = text.length;
+    });
+</script>

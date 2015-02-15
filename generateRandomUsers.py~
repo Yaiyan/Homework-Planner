@@ -1,0 +1,26 @@
+firstNames = ["Harry","Tom","Henry","Luke","Jack","Joe","Kieran","John","Matthew","Eric",
+              "Sam","Jackson","Ross","Adrian","Lewis","Daniel","Rob","Kevin","Leo","Elliot",
+              "Alastair","Mike","Michael","Robert","David","Ieuan","Rhodri","Dafydd","Andreas",
+              "Corey","Dan","Thomas","Will","William","Niall","James","Jacob","Jake","Christopher","Josh",
+              "Ethan","Anthony","Alex","Logan","Louis","Mason","Eli","Liam","Jenson","Noah","Samuel",
+              "Elijah","Ben","Owen","Joel","Ciaran","Bentley","Connor","Hunter","Jayden","Morgan","Ryan","Gavin","Jay","Simon",
+              "Steve","Paul","Elijah","Carter","Gabriel","Callum","Andrew","Nick","Nicolas","Llewelyn",
+              "Glyndwr","Owain","Peter","Andy","Martin","Jason","Gareth","Roger","Mary","Linda","Anna",
+              "Sophia","Emma","Isabella","Emily","Ava","Abigail","Ella","Lily","Josie","Natalie","Sofia","Charlotte",
+              "Zoe","Grace","Hannah","Amy","Amelia","Leah","Sarah","Eva","Ellie","Lucy","Naomi"];
+lastNames = ["Jones","Smith","Taylor","Williams","Brown","Davies","Evans","Wilson","Thomas",
+             "Johnson","Miller","Moore","Anderson","White","Harris","Thompson","Robinson",
+             "Clark","Lewis","Lee","Walker","Hall","Allen","Young","King","Wright","Hill",
+             "Scott","Green","Adams","Baker","Nelson","Carter","Morris","Bell","Brawn","Newey",
+             "Alves","Lumber","Jennings","Clarkson"];
+import random
+users = ""
+for i in range(0,20):
+    name = firstNames[random.randint(0,len(firstNames)-1)]+" "+firstNames[random.randint(0,len(lastNames)-1)]
+    users += name
+    users += ","
+    users += name.split()[0]+"@pupils.com"
+    users += "\n"
+file = open("userlist.csv","w")
+file.write(users)
+file.close()
